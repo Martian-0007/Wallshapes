@@ -46,8 +46,8 @@ void loop() {
 
   float brightness = ((float)photovalue-0.0)/1024.0;
 
-  if (brightness < 0.1) {
-    brightness = 0.0;
+  if (brightness < 0.05) {
+    brightness = 0.05;
   }
 
   // read the value from the sensors:
