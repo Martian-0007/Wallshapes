@@ -42,13 +42,13 @@ sensor:
       then:
         - light.turn_on: 
             id: walleaf_hex_1
-            brightness: !lambda 'if (id(light_sensor).state > 0.1) { return x; } else { return 0.15; };'
+            brightness: !lambda 'if (id(light_sensor).state > 0.1 && id(jumper_switch).state == 1) { return x; } else if (id(jumper_switch).state == 1) { return 0; };'
         - light.turn_on: 
             id: walleaf_hex_2
-            brightness: !lambda 'if (id(light_sensor).state > 0.1) { return x; } else { return 0.15; };'
+            brightness: !lambda 'if (id(light_sensor).state > 0.1 && id(jumper_switch).state == 1) { return x; } else if (id(jumper_switch).state == 1) { return 0; };'
         - light.turn_on: 
             id: walleaf_hex_3
-            brightness: !lambda 'if (id(light_sensor).state > 0.1) { return x; } else { return 0.15; };'
+            brightness: !lambda 'if (id(light_sensor).state > 0.1 && id(jumper_switch).state == 1) { return x; } else if (id(jumper_switch).state == 1) { return 0; };'
 
 
 # Buttons
@@ -94,6 +94,17 @@ binary_sensor:
             id: walleaf_hex_2
             brightness: 15%
             transition_length: 0.2s
+
+  # Switch
+  - platform: gpio
+    id: jumper_switch
+    pin:
+      number: 5
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Switch"
 
 
 # Lights
