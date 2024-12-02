@@ -10,16 +10,17 @@ logger:
 
 # Enable Home Assistant API
 api:
-  encryption:
-    key: "9BNM7l6pwjuXaCMwlr6n5wYZNa3moyP40OVHt6NKB88="
+  password: ""
+#  encryption:
+#    key: "9BNM7l6pwjuXaCMwlr6n5wYZNa3moyP40OVHt6NKB88="
 
 ota:
   - platform: esphome
     password: "2cdf2d6fa9d55e100dc9aed49eedaf41"
 
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
+  ssid: !secret kuba_ssid
+  password: !secret kuba_password
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
@@ -34,7 +35,7 @@ sensor:
     id: light_sensor
     pin: A0
     name: "Walleaf Light Sensor"
-    update_interval: 10s
+    update_interval: 3s
     unit_of_measurement: ""
     filters:
     - round: 2 # Round to two decimal places 
@@ -42,13 +43,25 @@ sensor:
       then:
         - light.turn_on: 
             id: walleaf_hex_1
-            brightness: !lambda 'if (id(light_sensor).state > 0.1 && id(jumper_switch).state == 1) { return x; } else if (id(jumper_switch).state == 1) { return 0; };'
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return x; } else if (true) { return 0.15; };'
         - light.turn_on: 
             id: walleaf_hex_2
-            brightness: !lambda 'if (id(light_sensor).state > 0.1 && id(jumper_switch).state == 1) { return x; } else if (id(jumper_switch).state == 1) { return 0; };'
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return x; } else if (true) { return 0.15; };'
         - light.turn_on: 
             id: walleaf_hex_3
-            brightness: !lambda 'if (id(light_sensor).state > 0.1 && id(jumper_switch).state == 1) { return x; } else if (id(jumper_switch).state == 1) { return 0; };'
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return x; } else if (true) { return 0.15; };'
+        - light.turn_on: 
+            id: walleaf_hex_4
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return x; } else if (true) { return 0.15; };'
+        - light.turn_on: 
+            id: walleaf_hex_5
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return x; } else if (true) { return 0.15; };'
+        - light.turn_on: 
+            id: walleaf_hex_6
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return x; } else if (true) { return 0.15; };'
+        - light.turn_on: 
+            id: walleaf_hex_7
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return x; } else if (true) { return 0.15; };'
 
 
 # Buttons
@@ -70,7 +83,7 @@ binary_sensor:
         - delay: 0.5s
         - light.turn_on: 
             id: walleaf_hex_1
-            brightness: 15%
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return id(light_sensor).state; } else if (true) { return 0.15; };'
             transition_length: 0.2s
 
 
@@ -92,8 +105,109 @@ binary_sensor:
         - delay: 0.5s
         - light.turn_on: 
             id: walleaf_hex_2
-            brightness: 15%
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return id(light_sensor).state; } else if (true) { return 0.15; };'
             transition_length: 0.2s
+
+  - platform: gpio
+    pin:
+      number: 4
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Hex 3 btn"
+    on_press:
+      then:
+        - light.turn_on: 
+            id: walleaf_hex_3
+            brightness: 100%
+            transition_length: 0.2s
+        - delay: 0.5s
+        - light.turn_on: 
+            id: walleaf_hex_3
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return id(light_sensor).state; } else if (true) { return 0.15; };'
+            transition_length: 0.2s
+            
+  - platform: gpio
+    pin:
+      number: 0
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Hex 4 btn"
+    on_press:
+      then:
+        - light.turn_on: 
+            id: walleaf_hex_4
+            brightness: 100%
+            transition_length: 0.2s
+        - delay: 0.5s
+        - light.turn_on: 
+            id: walleaf_hex_4
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return id(light_sensor).state; } else if (true) { return 0.15; };'
+            transition_length: 0.2s
+            
+  - platform: gpio
+    pin:
+      number: 2 # D4
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Hex 5 btn"
+    on_press:
+      then:
+        - light.turn_on: 
+            id: walleaf_hex_5
+            brightness: 100%
+            transition_length: 0.2s
+        - delay: 0.5s
+        - light.turn_on: 
+            id: walleaf_hex_5
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return id(light_sensor).state; } else if (true) { return 0.15; };'
+            transition_length: 0.2s
+            
+  - platform: gpio
+    pin:
+      number: 10 # S3
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Hex 6 btn"
+    on_press:
+      then:
+        - light.turn_on: 
+            id: walleaf_hex_6
+            brightness: 100%
+            transition_length: 0.2s
+        - delay: 0.5s
+        - light.turn_on: 
+            id: walleaf_hex_6
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return id(light_sensor).state; } else if (true) { return 0.15; };'
+            transition_length: 0.2s
+            
+  - platform: gpio
+    pin:
+      number: 9 # S2
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Hex 7 btn"
+    on_press:
+      then:
+        - light.turn_on: 
+            id: walleaf_hex_7
+            brightness: 100%
+            transition_length: 0.2s
+        - delay: 0.5s
+        - light.turn_on: 
+            id: walleaf_hex_7 
+            brightness: !lambda 'if (id(light_sensor).state > 0.15) { return id(light_sensor).state; } else if (true) { return 0.15; };'
+            transition_length: 0.2s
+
 
   # Switch
   - platform: gpio
@@ -109,7 +223,7 @@ binary_sensor:
 
 # Lights
 light:
-  # Segment the light into 3 nodes
+  # Segment the light into 7 nodes
   - platform: partition
     id: walleaf_hex_1
     name: "Hex 1"
@@ -152,13 +266,69 @@ light:
           speed: 10
           width: 50
 
+  - platform: partition
+    id: walleaf_hex_4
+    name: "Hex 4"
+    segments:
+      - id: walleaf
+        from: 90
+        to: 119
+    effects:
+      - addressable_rainbow:
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
+
+  - platform: partition
+    id: walleaf_hex_5
+    name: "Hex 5"
+    segments:
+      - id: walleaf
+        from: 120
+        to: 149
+    effects:
+      - addressable_rainbow:
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
+
+  - platform: partition
+    id: walleaf_hex_6
+    name: "Hex 6"
+    segments:
+      - id: walleaf
+        from: 150
+        to: 179
+    effects:
+      - addressable_rainbow:
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
+
+  - platform: partition
+    id: walleaf_hex_7
+    name: "Hex 7"
+    segments:
+      - id: walleaf
+        from: 180
+        to: 209
+    effects:
+      - addressable_rainbow:
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
+
   # Configure the Walleaf itself
   - platform: neopixelbus
     id: walleaf
     type: GRB
     variant: ws2812x
     pin: 13
-    num_leds: 90
+    num_leds: 210
     name: "Walleaf Hex"
     internal: true
     

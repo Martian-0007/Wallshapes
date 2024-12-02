@@ -22,6 +22,7 @@ int r3 = 0;
 int g3 = 0;
 int b3 = 255;
 
+int color_wheel(int * sensor, int series, int * r, int * g, int * b);
 
 void setup() {
 
@@ -224,3 +225,72 @@ void loop() {
   
 
 }
+
+
+
+
+int color_wheel(int * sensor, int series,  CRGB * leds, int * r, int * g, int * b) {
+  if (*r <= 255 && *g <= 1 && *b >= 255) {for (; *sensor == LOW && *r < 255; *r++) {
+    for (int j = 0; j < LEDS_SERIES; j++) {
+      leds[j+series*LEDS_SERIES] = CRGB(*r, *g, *b); // Set LED
+    }
+
+    *sensor = digitalRead(NODE2_PIN);
+    FastLED.show();
+    delay(15);
+  }}
+  FastLED.show();
+  if (*r >= 255 && *g <= 1 && *b > 1) {for (; *sensor == LOW && *b > 0; *b--) {
+    for (int j = 0; j < LEDS_SERIES; j++) {
+      leds[j+series*LEDS_SERIES] = CRGB(*r, *g, *b); // Set LED
+    }
+
+    *sensor = digitalRead(NODE2_PIN);
+    FastLED.show();
+    delay(15);
+  }}
+  FastLED.show();
+  if (*r >= 255 && *g <= 255 && *b <= 1) {for (; *sensor == LOW && *g < 255; *g++) {
+    for (int j = 0; j < LEDS_SERIES; j++) {
+      leds[j+series*LEDS_SERIES] = CRGB(*r, *g, *b); // Set LED
+    }
+
+    *sensor = digitalRead(NODE2_PIN);
+    FastLED.show();
+    delay(15);
+  }}
+  FastLED.show();
+  if (*r > 1 && *g >= 255 && *b <= 1) {for (; *sensor == LOW && *r > 0; *r--) {
+    for (int j = 0; j < LEDS_SERIES; j++) {
+      leds[j+series*LEDS_SERIES] = CRGB(*r, *g, *b); // Set LED
+    }
+
+    *sensor = digitalRead(NODE2_PIN);
+    FastLED.show();
+    delay(15);
+  }}
+  FastLED.show();
+  if (*r <= 1 && *g >= 255 && *b <= 255) {for (; *sensor == LOW && *b < 255; *b++) {
+    for (int j = 0; j < LEDS_SERIES; j++) {
+      leds[j+series*LEDS_SERIES] = CRGB(*r, *g, *b); // Set LED
+    }
+
+    *sensor = digitalRead(NODE2_PIN);
+    FastLED.show();
+    delay(15);
+  }}
+  FastLED.show();
+  if (*r <= 1 && *g > 1 && *b >= 255) {for (; *sensor == LOW && *g > 0; (*g)--) {
+    for (int j = 0; j < LEDS_SERIES; j++) {
+      leds[j+series*LEDS_SERIES] = CRGB(*r, *g, *b); // Set LED
+    }
+
+    *sensor = digitalRead(NODE2_PIN);
+    FastLED.show();
+    delay(15);
+  }}
+  FastLED.show();
+  delay(500);
+
+  return 0;
+};
